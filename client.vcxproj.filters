@@ -18,5 +18,22 @@
     <ClCompile Include="client.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="applink.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="checkcert.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InitialP12.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="get_password.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="head.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
