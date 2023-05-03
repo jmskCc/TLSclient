@@ -1,11 +1,9 @@
 ﻿#include "head.h"
 
-#define MAX_BUF_SIZE 2048
-#define SERVER_PORT 443
+#define SERVER_PORT 446
 #define SERVER_ADDR "127.0.0.1"
-#define CA_CERT "C:\\Users\\64515\\Desktop\\毕业设计\\证书\\ca.crt"
 
-
+HANDLE hThread[2];
 int main(int argc, char *argv[])
 {
     WSADATA wsaData;
@@ -13,6 +11,8 @@ int main(int argc, char *argv[])
     EVP_PKEY* pkey;
     X509* cert;
     char addr[2028];
+    DWORD dwThreadId;
+
     int* err = (int*)malloc(sizeof(int));
     *err = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (*err != 0) {
@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
         printf("InitialP12 failed\n");
         return -1;
     }
+    name = GetCNFromCert(cert);
 
     if (SSL_CTX_use_certificate(ctx, cert) <= 0)//加载用户证书
     {
@@ -125,8 +126,32 @@ int main(int argc, char *argv[])
             printf("程序已结束\n");
             return -1;
         }
+        else
+        {
+            printf("%s欢迎您\n", name);
+        }
     }
+    
+    hThread[0] = CreateThread(
+        NULL,		// 默认安全属性
+        NULL,		// 默认堆栈大小
+        recv_msg,	// 线程入口地址（执行线程的函数）
+        (void*)ssl,		// 传给函数的参数
+        0,		// 指定线程立即运行
+        &dwThreadId);	// 返回线程的ID号
+    hThread[1] = CreateThread(
+        NULL,		// 默认安全属性
+        NULL,		// 默认堆栈大小
+        send_msg,	// 线程入口地址（执行线程的函数）
+        (void*) ssl,		// 传给函数的参数
+        0,		// 指定线程立即运行
+        &dwThreadId);	// 返回线程的ID号
 
+    // 等待线程运行结束
+    WaitForMultipleObjects(2, hThread, true, INFINITE);
+    CloseHandle(hThread[0]);
+    CloseHandle(hThread[1]);
+    /*
     char buf[MAX_BUF_SIZE];
     for(;;)
     {
@@ -145,7 +170,9 @@ int main(int argc, char *argv[])
         printf("Received message: %s\n", buf);
 
     }
-
+    */
+    printf(" Thread Over,Enter anything to over.\n");
+    getchar();
     SSL_shutdown(ssl);
     SSL_free(ssl);
     SSL_CTX_free(ctx);
