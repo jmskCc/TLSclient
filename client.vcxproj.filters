@@ -27,7 +27,7 @@
     <ClCompile Include="InitialP12.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="get_password.cpp">
+    <ClCompile Include="GetPassword.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

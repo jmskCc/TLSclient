@@ -16,5 +16,5 @@
 #pragma comment(lib,"libssl.lib")
 
 int CheckCert(SSL* ssl);
-void get_password(char* password);
+void GetPassword(char* password);
 int InitialP12(char* addr, EVP_PKEY** pkey_s, X509** cert_s);

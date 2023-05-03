@@ -1,8 +1,8 @@
 #include "head.h"
 
 int InitialP12(char* addr, EVP_PKEY** pkey_s, X509** cert_s) {
-    unsigned char* p12_str;
-    long p12_size;
+    //unsigned char* p12_str;
+   // long p12_size;
     PKCS12* p12;
     EVP_PKEY* pkey = NULL;
     X509* cert = NULL;
@@ -20,7 +20,7 @@ int InitialP12(char* addr, EVP_PKEY** pkey_s, X509** cert_s) {
     char* passwd = (char*)OPENSSL_secure_malloc(256);
 
     printf("«Î ‰»ÎP12÷§ È√‹¬Î\n");
-    get_password(passwd);
+    GetPassword(passwd);
     PKCS12_parse(p12, passwd, &pkey, &cert, NULL);
     OPENSSL_secure_clear_free(passwd, 256);
     *cert_s = cert;

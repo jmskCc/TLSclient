@@ -1,6 +1,6 @@
 #include "head.h"
 
-void get_password(char* password) {
+void GetPassword(char* password) {
     HANDLE hStdin;
     DWORD mode;
 
