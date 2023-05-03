@@ -17,7 +17,6 @@ DWORD WINAPI send_msg(LPVOID lpParam)
 		}
 		sprintf(name_msg, "[%s]: %s", name, msg);
 		SSL_write(ssl, name_msg, strlen(name_msg));
-		//int nRecv = send(sock, name_msg, strlen(name_msg), 0);
 	}
 	return NULL;
 }

@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
         0,		// 指定线程立即运行
         &dwThreadId);	// 返回线程的ID号
 
-    // 等待线程运行结束
+    // 等待线程退出
     WaitForMultipleObjects(2, hThread, true, INFINITE);
     CloseHandle(hThread[0]);
     CloseHandle(hThread[1]);
@@ -171,8 +171,6 @@ int main(int argc, char *argv[])
 
     }
     */
-    printf(" Thread Over,Enter anything to over.\n");
-    getchar();
     SSL_shutdown(ssl);
     SSL_free(ssl);
     SSL_CTX_free(ctx);
