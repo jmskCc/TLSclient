@@ -139,12 +139,26 @@ int main(int argc, char *argv[])
     server_addr.sin_port = htons(SERVER_PORT);
     server_addr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
 
+    for (;;) {
+        if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == SOCKET_ERROR)
+        {
+            printf("无法连接服务器正在重试中\n");
+            Sleep(10);
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    /*
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == SOCKET_ERROR)
     {
         printf("connect failed\n");
         return -1;
     }
-
+    */
     SSL* ssl = SSL_new(ctx);
     SSL_set_fd(ssl, sockfd);
     if (SSL_connect(ssl) == -1)
