@@ -19,9 +19,19 @@ int InitialP12(char* addr, EVP_PKEY** pkey_s, X509** cert_s) {
     fclose(p12_file);
     char* passwd = (char*)OPENSSL_secure_malloc(256);
 
-    printf("请输入P12证书密码\n");
-    GetPassword(passwd);
-    PKCS12_parse(p12, passwd, &pkey, &cert, NULL);
+    for (;;) {
+        printf("请输入P12证书密码\n");
+        GetPassword(passwd);
+        if (PKCS12_parse(p12, passwd, &pkey, &cert, NULL) != 1) {
+            printf("密码输入错误请重新输入\n");
+            memset(passwd, 0, 256);
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
     OPENSSL_secure_clear_free(passwd, 256);
     *cert_s = cert;
     *pkey_s = pkey;
