@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     SSL_CTX* ctx;
     EVP_PKEY* pkey;
     X509* cert;
-    char addr[2028];
+    char addr[2048];
     DWORD dwThreadId;
 
     int* err = (int*)malloc(sizeof(int));
@@ -34,14 +34,19 @@ int main(int argc, char *argv[])
     }
 
     SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);//启动双项认证
-    if (SSL_CTX_load_verify_locations(ctx, CA_CERT, NULL) <= 0)//加载根证书
+
+    printf("（客户端）请输入根证书文件地址\n");
+    scanf("%s", addr);
+    if (SSL_CTX_load_verify_locations(ctx, addr, NULL) <= 0)//加载根证书
     {
         printf("SSL_CTX_load_verify_locations failed\n");
         ERR_print_errors_fp(stdout);
         return -1;
     }
+    
+    memset(addr, 0, 2048);
 
-    printf("请输入P12文件地址\n");
+    printf("（客户端）请输入P12文件地址\n");
     scanf("%s", addr);
     if (InitialP12(addr, &pkey, &cert) == -1) {
         printf("InitialP12 failed\n");
@@ -103,7 +108,6 @@ int main(int argc, char *argv[])
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
-    //InetPton(AF_INET, SERVER_ADDR, &server_addr);
     server_addr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
 
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == SOCKET_ERROR)
@@ -122,6 +126,7 @@ int main(int argc, char *argv[])
     }
     else {
         printf("Connected with %s encryption\n", SSL_get_cipher(ssl));
+        system("cls");
         if (CheckCert(ssl) != 1) {
             printf("程序已结束\n");
             return -1;
@@ -131,7 +136,7 @@ int main(int argc, char *argv[])
             printf("%s欢迎您\n", name);
         }
     }
-    
+    rewind(stdin);
     hThread[0] = CreateThread(
         NULL,		// 默认安全属性
         NULL,		// 默认堆栈大小

@@ -17,7 +17,6 @@
 
 #define MAX_BUF_SIZE 2048
 #define NAME_SIZE 30
-#define CA_CERT "C:/Users/64515/Desktop/毕业设计/证书/ca.crt"
 extern HANDLE hThread[2];
 extern char* name;
 

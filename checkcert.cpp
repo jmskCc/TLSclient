@@ -6,7 +6,7 @@ int CheckCert(SSL* ssl) {
     cert = SSL_get_peer_certificate(ssl);
 
     if (cert != NULL) {
-        printf("数字证书信息:\n");
+        printf("服务器数字证书信息:\n");
         line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
         printf("证书: %s\n", line);
         line = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0);

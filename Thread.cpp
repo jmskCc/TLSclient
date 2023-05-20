@@ -6,9 +6,11 @@ DWORD WINAPI send_msg(LPVOID lpParam)
 {
 	SSL* ssl = ((SSL*)lpParam);
 	char name_msg[NAME_SIZE + MAX_BUF_SIZE];
+	sprintf(name_msg, "[%s]: %s加入安全聊天室\n", name, name);
+	SSL_write(ssl, name_msg, strlen(name_msg));
 	for(;;)
 	{
-		
+		memset(name_msg, 0, NAME_SIZE + MAX_BUF_SIZE);
 		fgets(msg, MAX_BUF_SIZE, stdin);
 		if (!strcmp(msg, "q\n") || !strcmp(msg, "Q\n"))
 		{
