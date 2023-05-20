@@ -1,7 +1,6 @@
 ﻿#include "head.h"
 
 #define SERVER_PORT 446
-#define SERVER_ADDR "127.0.0.1"
 
 HANDLE hThread[2];
 int main(int argc, char *argv[])
@@ -70,6 +69,7 @@ int main(int argc, char *argv[])
             continue;;
         }
         else {
+            memset(addr, 0, 2048);
             break;
         }
     }
@@ -132,12 +132,13 @@ int main(int argc, char *argv[])
         printf("socket failed\n");
         return -1;
     }
-
+    printf("请输入聊天室服务器IP地址\n");
+    scanf("%s", addr);
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
-    server_addr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+    server_addr.sin_addr.s_addr = inet_addr(addr);
 
     for (;;) {
         if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == SOCKET_ERROR)
