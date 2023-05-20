@@ -35,6 +35,22 @@ int main(int argc, char *argv[])
 
     SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);//启动双项认证
 
+    for(;;){
+        printf("（客户端）请输入根证书文件地址\n");
+        scanf("%s", addr);
+
+        if (SSL_CTX_load_verify_locations(ctx, addr, NULL) <= 0)//加载根证书
+        {
+            printf("SSL_CTX_load_verify_locations failed\n");
+            ERR_print_errors_fp(stdout);
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+    /*
     printf("（客户端）请输入根证书文件地址\n");
     scanf("%s", addr);
     if (SSL_CTX_load_verify_locations(ctx, addr, NULL) <= 0)//加载根证书
@@ -43,15 +59,28 @@ int main(int argc, char *argv[])
         ERR_print_errors_fp(stdout);
         return -1;
     }
-    
+    */
     memset(addr, 0, 2048);
 
+    for (;;) {
+        printf("（客户端）请输入P12文件地址\n");
+        scanf("%s", addr);
+        if (InitialP12(addr, &pkey, &cert) == -1) {
+            printf("InitialP12 failed\n");
+            continue;;
+        }
+        else {
+            break;
+        }
+    }
+    /*
     printf("（客户端）请输入P12文件地址\n");
     scanf("%s", addr);
     if (InitialP12(addr, &pkey, &cert) == -1) {
         printf("InitialP12 failed\n");
         return -1;
     }
+    */
     name = GetCNFromCert(cert);
 
     if (SSL_CTX_use_certificate(ctx, cert) <= 0)//加载用户证书
