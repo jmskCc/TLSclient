@@ -29,10 +29,10 @@ int InitialP12(char* addr, EVP_PKEY** pkey_s, X509** cert_s) {
         }
         else
         {
+            OPENSSL_secure_clear_free(passwd, 256);
             break;
         }
     }
-    OPENSSL_secure_clear_free(passwd, 256);
     *cert_s = cert;
     *pkey_s = pkey;
     /**pkey_s = (EVP_PKEY*)OPENSSL_secure_malloc(EVP_PKEY_size(pkey));

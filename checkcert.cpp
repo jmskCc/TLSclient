@@ -18,9 +18,25 @@ int CheckCert(SSL* ssl) {
         return -1;
     }
 
-    if (SSL_get_verify_result(ssl) == X509_V_OK) {
+    long flag = SSL_get_verify_result(ssl);
+    if (flag == X509_V_OK) {
         printf("证书验证通过\n");
         return 1;
+    }
+    else if (flag == X509_V_ERR_CERT_HAS_EXPIRED)
+    {
+        printf("证书已过期\n");
+        return -1;
+    }
+    else if (flag == X509_V_ERR_CERT_NOT_YET_VALID)
+    {
+        printf("证书未生效\n");
+        return -1;
+    }
+    else if (flag == X509_V_ERR_CERT_UNTRUSTED)
+    {
+        printf("证书不受信任\n");
+        return -1;
     }
     else {
         printf("证书验证失败\n");
